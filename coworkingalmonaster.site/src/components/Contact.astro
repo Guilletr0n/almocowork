@@ -1,0 +1,96 @@
+---
+import Emailer from "../components/Emailer.tsx";
+import { MailerSend, EmailParams, Sender, Recipient } from "mailersend";
+// const Recipient = require("mailersend").Recipient;
+// const EmailParams = require("mailersend").EmailParams;
+// const MailerSend = require("mailersend");
+
+if (Astro.request.method === "POST") {
+    try {
+        const data = await Astro.request.formData();
+        const name = data.get("name");
+        const email = data.get("email");
+        const about = data.get("about");
+
+        const mailersend = new MailerSend({
+            api_key:
+                "mlsn.3c10fb5d88d736c3ccea5391ad99879ea26915370f9a3f629e48c9922e58ab10",
+        });
+
+        const sentFrom = new Sender(
+            "coworking@almonasterlareal.es",
+            "Guillermo",
+        );
+
+        const recipients = [
+            new Recipient("gonzalezdecastro.guillemro@gmail.com", "Guillermo"),
+        ];
+
+        const emailParams = new EmailParams()
+            .setFrom(sentFrom)
+            .setTo(recipients)
+            .setReplyTo(sentFrom)
+            .setSubject("This is a Subject")
+            .setHtml("<strong>This is the HTML content</strong>")
+            .setText("This is the text content");
+
+        await mailerSend.email.send(emailParams);
+    } catch (error) {
+        if (error instanceof Error) {
+            console.error(error.message);
+        }
+    }
+}
+---
+
+<style>
+    form {
+        margin: 48px 0;
+    }
+    .form-field {
+        position: relative;
+        margin-bottom: 32px;
+        display: block;
+        width: 100%;
+    }
+    label {
+        font-size: 13px;
+        top: -24px;
+        position: absolute;
+    }
+    textarea,
+    input {
+        border: none;
+        border-bottom: 2px solid black;
+        width: 50%;
+    }
+    textarea {
+        width: 50%;
+    }
+    input[type="submit"] {
+        background-color: black;
+        color: white;
+        padding: 12px 16px;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+        font-weight: bold;
+    }
+</style>
+<Emailer />
+<form method="POST">
+    <div class="form-field">
+        <label> Nombre </label>
+        <input type="text" name="name" />
+    </div>
+    <div class="form-field">
+        <label> Email </label>
+        <input type="email" name="email" />
+    </div>
+    <div class="form-field">
+        <label> Cuéntanos algo sobre tu proyecto: </label>
+        <textarea style="resize: none;" name="about"></textarea>
+    </div>
+
+    <input type="submit" value="ENVIAR" />
+</form>
