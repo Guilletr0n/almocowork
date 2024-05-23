@@ -13,8 +13,7 @@ if (Astro.request.method === "POST") {
         const about = data.get("about");
 
         const mailersend = new MailerSend({
-            api_key:
-                "mlsn.3c10fb5d88d736c3ccea5391ad99879ea26915370f9a3f629e48c9922e58ab10",
+            apiKey: "mlsn.3c10fb5d88d736c3ccea5391ad99879ea26915370f9a3f629e48c9922e58ab10",
         });
 
         const sentFrom = new Sender(
@@ -34,7 +33,7 @@ if (Astro.request.method === "POST") {
             .setHtml("<strong>This is the HTML content</strong>")
             .setText("This is the text content");
 
-        await mailerSend.email.send(emailParams);
+        await mailersend.email.send(emailParams);
     } catch (error) {
         if (error instanceof Error) {
             console.error(error.message);
