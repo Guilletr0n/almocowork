@@ -13,7 +13,7 @@ if (Astro.request.method === "POST") {
         const about = data.get("about");
 
         const mailersend = new MailerSend({
-            apiKey: "mlsn.3c10fb5d88d736c3ccea5391ad99879ea26915370f9a3f629e48c9922e58ab10",
+            apiKey: // TODO: Add your MailerSend API key here,
         });
 
         const sentFrom = new Sender(
