@@ -1,10 +1,13 @@
 ---
+import { Image } from "astro:assets";
 import BaseHead from "../components/BaseHead.astro";
 import Header from "../components/Header.astro";
 import Footer from "../components/Footer.astro";
 import Calendar from "../components/Calendar.astro";
 import Contact from "../components/Contact.astro";
 import { SITE_TITLE, SITE_DESCRIPTION } from "../consts";
+import plazaMemoriaImage from "../src/assets/images/plaza-de-la-memoria.jpg";
+import panoramicaAlmonasterImage from "../assets/images/panoramica-almonaster.jpg";
 ---
 
 <!doctype html>
@@ -34,10 +37,11 @@ import { SITE_TITLE, SITE_DESCRIPTION } from "../consts";
             <section class="contact-section">
                 <Contact />
             </section>
-            <img
-                src="./src/assets/images/panoramica_almonaster.jpg"
-                alt="panoramica desde las oficinas"
+            <Image
+                src={panoramicaAlmonasterImage}
+                alt="La panorámica que verás desde tu mesa de trabajo"
             />
+
             <section>
                 <iframe
                     src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3149.5359297690165!2d-6.789423087176542!3d37.871147606483575!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0xd110c8162817f5d%3A0x6bbeb4200df976ca!2sC.%20Llana%2C%2018%2C%2021350%20Almonaster%20la%20Real%2C%20Huelva!5e0!3m2!1ses!2ses!4v1715442247903!5m2!1ses!2ses"
@@ -52,7 +56,8 @@ import { SITE_TITLE, SITE_DESCRIPTION } from "../consts";
         <Footer />
         <style>
             body {
-                background-image: url("./src/assets/images/plaza_de_la_memoria.jpg");
+                /* background-image: url("./src/assets/images/plaza-de-la-memoria.jpg"); */
+                background-image: plazaMemoriaImage;
                 background-size: contain;
                 background-repeat: no-repeat;
                 background-position: top;
