@@ -33,7 +33,7 @@ if (Astro.request.method === "POST") {
             .setHtml("<strong>This is the HTML content</strong>")
             .setText("This is the text content");
 
-        await mailerSend.email.send(emailParams);
+        await mailersend.email.send(emailParams);
     } catch (error) {
         if (error instanceof Error) {
             console.error(error.message);
