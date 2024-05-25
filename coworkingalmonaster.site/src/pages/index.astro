@@ -37,10 +37,14 @@ import panoramicaAlmonasterImage from "../assets/images/panoramica-almonaster.jp
             <section class="contact-section">
                 <Contact />
             </section>
-            <Image
-                src={panoramicaAlmonasterImage}
-                alt="La panorámica que verás desde tu mesa de trabajo"
-            />
+
+<Image
+    src={panoramicaAlmonasterImage}
+    alt="Panorámica de Almonaster la Real"
+    width={1000}
+    height={600}
+/>
+
 
             <section>
                 <iframe
@@ -57,7 +61,7 @@ import panoramicaAlmonasterImage from "../assets/images/panoramica-almonaster.jp
         <style>
             body {
                 /* background-image: url("./src/assets/images/plaza-de-la-memoria.jpg"); */
-                background-image: plazaMemoriaImage;
+                background-image: url(plazaMemoriaImage);
                 background-size: contain;
                 background-repeat: no-repeat;
                 background-position: top;
@@ -78,7 +82,7 @@ import panoramicaAlmonasterImage from "../assets/images/panoramica-almonaster.jp
                     text-transform: uppercase;
                     font-weight: 900;
                     letter-spacing: 2px;
-                    text-shadow: 0 0 6px rgba(0, 0, 0, 0.8);
+                    /* text-shadow: 0 0 6px rgba(0, 0, 0, 0.8); */
                     margin-bottom: 100px;
                     text-wrap: balance;
                 }
