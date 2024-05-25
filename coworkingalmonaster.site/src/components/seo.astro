@@ -1,11 +1,14 @@
 ---
 import { SEO } from "astro-seo";
-import { SITE } from "~/config.mjs";
 
 import defaultImageFile from "~/assets/images/logo.png";
 
+const site = {
+    name: "Coworking Almonaster",
+    url: "https://coworking-almonaster.com",
+};
 const {
-    title = SITE.name,
+    title = site.name,
     description = "Espacio de trabajo y asesoramiento para personas emprendedoras",
 
     canonical,
@@ -34,7 +37,7 @@ if (typeof _image === "string") {
 
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-
+<meta property="og:site_name" content="Coworking Almonaster" />
 <SEO
     title={title}
     description={description}
@@ -78,7 +81,7 @@ if (typeof _image === "string") {
             },
             {
                 name: "og:site_name",
-                content: SITE.name,
+                content: site.name,
             },
         ],
     }}
