@@ -1,45 +1,47 @@
 ---
 import Emailer from "../components/Emailer.tsx";
 import { MailerSend, EmailParams, Sender, Recipient } from "mailersend";
+import dotenv from "dotenv";
+dotenv.config();
 // const Recipient = require("mailersend").Recipient;
 // const EmailParams = require("mailersend").EmailParams;
 // const MailerSend = require("mailersend");
 
-if (Astro.request.method === "POST") {
-    try {
-        const data = await Astro.request.formData();
-        const name = data.get("name");
-        const email = data.get("email");
-        const about = data.get("about");
+// if (Astro.request.method === "POST") {
+//     try {
+//         const data = await Astro.request.formData();
+//         const name = data.get("name");
+//         const email = data.get("email");
+//         const about = data.get("about");
 
-        const mailersend = new MailerSend({
-            apiKey: process.env.MAILSENDER_APIKEY,
-        });
+//         const mailersend = new MailerSend({
+//             apiKey: process.env.MAILSENDER_APIKEY,
+//         });
 
-        const sentFrom = new Sender(
-            "coworking@almonasterlareal.es",
-            "Guillermo",
-        );
+//         const sentFrom = new Sender(
+//             "coworking@almonasterlareal.es",
+//             "Guillermo",
+//         );
 
-        const recipients = [
-            new Recipient("gonzalezdecastro.guillemro@gmail.com", "Guillermo"),
-        ];
+//         const recipients = [
+//             new Recipient("gonzalezdecastro.guillemro@gmail.com", "Guillermo"),
+//         ];
 
-        const emailParams = new EmailParams()
-            .setFrom(sentFrom)
-            .setTo(recipients)
-            .setReplyTo(sentFrom)
-            .setSubject("This is a Subject")
-            .setHtml("<strong>This is the HTML content</strong>")
-            .setText("This is the text content");
+//         const emailParams = new EmailParams()
+//             .setFrom(sentFrom)
+//             .setTo(recipients)
+//             .setReplyTo(sentFrom)
+//             .setSubject("This is a Subject")
+//             .setHtml("<strong>This is the HTML content</strong>")
+//             .setText("This is the text content");
 
-        await mailersend.email.send(emailParams);
-    } catch (error) {
-        if (error instanceof Error) {
-            console.error(error.message);
-        }
-    }
-}
+//         await mailersend.email.send(emailParams);
+//     } catch (error) {
+//         if (error instanceof Error) {
+//             console.error(error.message);
+//         }
+//     }
+// }
 ---
 
 <style>
