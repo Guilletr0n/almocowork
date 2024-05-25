@@ -3,8 +3,7 @@
   https://github.com/HermanMartinus/bearblog/blob/297026a877bc2ab2b3bdfbd6b9f7961c350917dd/templates/styles/blog/default.css
   License MIT: https://github.com/HermanMartinus/bearblog/blob/master/LICENSE.md
  */
-@import url("https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:ital,wght@0,400;0,700;1,400;1,700&display=swap");
-
+@import url("https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,200..800&family=Noto+Sans:ital,wght@0,100..900;1,100..900&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap");
 :root {
     --accent: #2337ff;
     --accent-dark: #000d8a;
@@ -16,7 +15,7 @@
     --box-shadow: 0 2px 6px rgba(var(--gray), 25%),
         0 8px 24px rgba(var(--gray), 33%), 0 16px 32px rgba(var(--gray), 33%);
 }
-@font-face {
+/* @font-face {
     font-family: "Atkinson";
     src: url("/fonts/atkinson-regular.woff") format("woff");
     font-weight: 400;
@@ -25,13 +24,15 @@
 }
 @font-face {
     font-family: "Atkinson Hyperlegible";
-    /* src: url('/fonts/atkinson-bold.woff') format('woff'); */
+    src: url('/fonts/atkinson-bold.woff') format('woff');
     font-weight: 700;
     font-style: normal;
     font-display: swap;
-}
+} */
+
 body {
-    font-family: "Atkinson Hyperlegible", sans-serif;
+    font-family: "Noto Sans", sans-serif;
+    font-optical-sizing: auto;
     margin: 0;
     padding: 0;
     text-align: left;
