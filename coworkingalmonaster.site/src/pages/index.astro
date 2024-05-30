@@ -84,7 +84,15 @@ import panoramicaAlmonasterImage from "../assets/images/panoramica-almonaster.jp
                     letter-spacing: 2px;
                     /* text-shadow: 0 0 6px rgba(0, 0, 0, 0.8); */
                     margin-bottom: 100px;
-                    text-wrap: balance;
+                    text-wrap: wrap;
+                    white-space: normal;
+                    
+                }
+                @media (max-width: 600px) {
+                    h1.title {
+                        margin-top: 3rem;
+                        font-size: 4ch;
+                    }
                 }
             }
             .events-section {
