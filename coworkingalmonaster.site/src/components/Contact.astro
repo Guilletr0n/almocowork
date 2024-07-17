@@ -1,46 +1,43 @@
 ---
 import Emailer from "../components/Emailer.tsx";
 import { MailerSend, EmailParams, Sender, Recipient } from "mailersend";
+import { Resend } from "resend";
+import { EmailTemplate } from "../components/email-template";
 
-// const Recipient = require("mailersend").Recipient;
-// const EmailParams = require("mailersend").EmailParams;
-// const MailerSend = require("mailersend");
+const resend = new Resend(import.meta.env.RESEND_API_KEY);
 
-// if (Astro.request.method === "POST") {
-//     try {
-//         const data = await Astro.request.formData();
-//         const name = data.get("name");
-//         const email = data.get("email");
-//         const about = data.get("about");
+if (Astro.request.method === "POST") {
+    try {
+        const data = await Astro.request.formData();
+        const name = data.get("name");
+        const email = data.get("email");
+        const about = data.get("about");
+        console.log(name);
 
-//         const mailersend = new MailerSend({
-//             apiKey: process.env.MAILSENDER_APIKEY,
-//         });
+        const sendStaff = await resend.emails.send({
+            from: "Web Coworking <info@coworkingalmonaster.site>",
+            to: "gonzalezdecastro.guillermo@gmail.com",
+            subject: "Formulario Coworking Almonaster",
+            html: `<p>Nombre: ${name}</p><p>Email: ${email}</p><p>Mensaje: ${about}</p>`,
+        });
 
-//         const sentFrom = new Sender(
-//             "coworking@almonasterlareal.es",
-//             "Guillermo",
-//         );
-
-//         const recipients = [
-//             new Recipient("gonzalezdecastro.guillemro@gmail.com", "Guillermo"),
-//         ];
-
-//         const emailParams = new EmailParams()
-//             .setFrom(sentFrom)
-//             .setTo(recipients)
-//             .setReplyTo(sentFrom)
-//             .setSubject("This is a Subject")
-//             .setHtml("<strong>This is the HTML content</strong>")
-//             .setText("This is the text content");
-
-//         await mailersend.email.send(emailParams);
-//     } catch (error) {
-//         if (error instanceof Error) {
-//             console.error(error.message);
-//         }
-//     }
-// }
+        // const send = await resend.emails.send({
+        //     from: "From Name <info@coworkingalmonaster.site>",
+        //     to: "gonzalezdecastro.guillermo@gmail.com",
+        //     subject: "Coworking Almonaster",
+        //     html: `<p>Hi ${name},</p><p>Hemos recibido tu mensaje.</p>`,
+        // });
+        if (sendStaff.data) {
+            console.log("Email sent");
+        } else {
+            console.log("Email not sent");
+        }
+    } catch (error) {
+        if (error instanceof Error) {
+            console.error(error.message);
+        }
+    }
+}
 ---
 
 <style>
