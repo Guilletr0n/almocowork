@@ -17,7 +17,7 @@ if (Astro.request.method === "POST") {
 
         const sendStaff = await resend.emails.send({
             from: "Web Coworking <info@coworkingalmonaster.site>",
-            to: "gonzalezdecastro.guillermo@gmail.com",
+            to: ['gonzalezdecastro.guillermo@gmail.com','juanjovazquezlimon@gmail.com'],
             subject: "Formulario Coworking Almonaster",
             html: `<p>Nombre: ${name}</p><p>Email: ${email}</p><p>Mensaje: ${about}</p>`,
         });
