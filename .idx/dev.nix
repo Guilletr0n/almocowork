@@ -29,12 +29,12 @@
         web = {
           # Example: run "npm run dev" with PORT set to IDX's defined port for previews,
           # and show it in IDX's web preview panel
-          cwd = "coworkingalmonaster.site";
-          command = [ "npm" "run" "dev" ];
+          command = [ "npm" "run" "dev" "--" "--port" "$PORT" "--hostname" "0.0.0.0"];
           manager = "web";
           env = {
             # Environment variables to set for your server
             PORT = "4321";
+            
           };
         };
       };
