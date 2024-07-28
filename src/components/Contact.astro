@@ -6,18 +6,21 @@ import { Resend } from "resend";
 const resend = new Resend(import.meta.env.RESEND_APIKEY);
 console.log('init')
 if (Astro.request.method === "POST") {
-    console.log('post');
+    
     
     try {
         const data = await Astro.request.formData();
         const name = data.get("name");
         const email = data.get("email");
+        const phone = data.get("phone")
         const about = data.get("about");
-        console.log(name);
+        
+        if(phone) return;
 
         const sendStaff = await resend.emails.send({
             from: "Web Coworking <info@coworkingalmonaster.site>",
             to: ['gonzalezdecastro.guillermo@gmail.com','juanjovazquezlimon@gmail.com'],
+            //to: 'gonzalezdecastro.guillermo@gmail.com',
             subject: "Formulario Coworking Almonaster",
             html: `<p>Nombre: ${name}</p><p>Email: ${email}</p><p>Mensaje: ${about}</p>`,
         });
@@ -51,6 +54,18 @@ if (Astro.request.method === "POST") {
         display: block;
         width: 100%;
     }
+    .phone {
+        height: 3px;
+        input, label {
+            color: #FEFEFE;
+        }
+    }
+    .honey {
+        color: #FEFEFE;
+        border-color: #FEFEFE;
+        position: absolute;
+        left: -1000px;
+    }
     label {
         font-size: 13px;
         top: -24px;
@@ -83,6 +98,11 @@ if (Astro.request.method === "POST") {
     <div class="form-field">
         <label> Email </label>
         <input type="email" name="email" />
+    </div>
+    <div class="form-field phone">
+        <label class="honey"> Teléfono </label>
+        <input type="text" name="phone" class="honey">
+    </div>
     </div>
     <div class="form-field">
         <label> Cuéntanos algo sobre tu proyecto: </label>
