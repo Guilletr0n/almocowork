@@ -1,0 +1,69 @@
+---
+// import { GraphQLClient } from "graphql-request";
+
+// type Events = {
+//     allEvents: {
+//       titulo: string,
+//       descripcion: string
+//     }[]
+// }
+// const client = new GraphQLClient(import.meta.env.HYGRAPH_ENDPOINT);
+
+// const {allEvents}: Events = await client.request(`
+//   query 
+//     allEvents {
+//       titulo
+//       descripcion
+//     }
+// `)
+import { Debug } from 'astro:components';
+interface Event {
+  titulo: string;
+  descripcion: string
+}
+
+const query = {
+  method: "POST",
+  headers: { "Content-Type": "application/json" },
+  body: JSON.stringify({
+    query: `
+      {
+        allEvents {
+          titulo
+          descripcion
+        }
+      }`,
+  }),
+};
+console.log('fetch hygraph')
+const response = await fetch(import.meta.env.HYGRAPH_ENDPOINT, query);
+const json = await response.json();
+console.log('events');
+console.log(json);
+const allEvents: Event[] = json.data.allEvents;
+
+---
+
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <meta name="viewport" content="width=device-width" />
+    <meta name="generator" content={Astro.generator} />
+    <title>Astro</title>
+  </head>
+  <body>
+    <h2>Proximos eventos</h2>
+    <Debug answer={json.data.allEvents}} />
+    <ul>
+    {
+      allEvents.map((event) => (
+        <li>
+          <h2>evento:{event.titulo}</h2>
+        </li>
+      ))
+    }
+    </ul>
+    </body>
+  </body>
+</html>
