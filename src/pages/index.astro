@@ -40,6 +40,7 @@ import panoramicaAlmonasterImage from "../assets/images/panoramica-almonaster.jp
 <Image
     src={panoramicaAlmonasterImage}
     alt="Panorámica de Almonaster la Real"
+    class="visual__picture"
     width={1000}
     height={600}
 />
@@ -57,10 +58,10 @@ import panoramicaAlmonasterImage from "../assets/images/panoramica-almonaster.jp
         <Footer />
         <style>
             body {
-                background-image: url("../assets/images/plaza-de-la-memoria.jpg");
-                background-image: url(plazaMemoriaImage);
-                background-size: contain;
-                background-repeat: no-repeat;
+                //background-image: url("../assets/images/plaza-de-la-memoria.jpg");
+                //background-image: url(plazaMemoriaImage);
+                //background-size: contain;
+                //background-repeat: no-repeat;
                 background-position: top;
             }
             main {
@@ -101,6 +102,14 @@ import panoramicaAlmonasterImage from "../assets/images/panoramica-almonaster.jp
             
             .contact-section {
                 margin: 2.5rem 0;
+            }
+
+            .visual__picture {
+                filter: grayscale() contrast(1.75);
+                transition: filter 0.2s ease-in-out;
+                &:hover {
+                    filter:brightness(1) grayscale(0) contrast(1);
+                }
             }
         </style>
     </body>
