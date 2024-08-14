@@ -1,25 +1,10 @@
 ---
-// import { GraphQLClient } from "graphql-request";
 
-// type Events = {
-//     allEvents: {
-//       titulo: string,
-//       descripcion: string
-//     }[]
-// }
-// const client = new GraphQLClient(import.meta.env.HYGRAPH_ENDPOINT);
-
-// const {allEvents}: Events = await client.request(`
-//   query 
-//     allEvents {
-//       titulo
-//       descripcion
-//     }
-// `)
 import { Debug } from 'astro:components';
 interface Event {
   titulo: string;
   descripcion: string
+  fecha: string
 }
 
 const query = {
@@ -31,39 +16,51 @@ const query = {
         allEvents {
           titulo
           descripcion
+          fecha
         }
       }`,
   }),
 };
-console.log('fetch hygraph')
 const response = await fetch(import.meta.env.HYGRAPH_ENDPOINT, query);
 const json = await response.json();
-console.log('events');
-console.log(json);
 const allEvents: Event[] = json.data.allEvents;
 
 ---
-
-<html lang="en">
-  <head>
-    <meta charset="utf-8" />
-    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-    <meta name="viewport" content="width=device-width" />
-    <meta name="generator" content={Astro.generator} />
-    <title>Astro</title>
-  </head>
-  <body>
-    <h2>Proximos eventos</h2>
-    <Debug answer={json.data.allEvents}} />
-    <ul>
+{ allEvents  && allEvents.length > 0 &&  
+( <section class="events-section">
+  <h2>Próximos Eventos</h2>
+  <ul>
     {
       allEvents.map((event) => (
         <li>
-          <h2>evento:{event.titulo}</h2>
+          <h3>{event.titulo}</h3>
+          <p>{event.fecha}</p>
+          <p>{event.descripcion}</p>
         </li>
       ))
     }
     </ul>
-    </body>
-  </body>
-</html>
+  </section> )
+  }
+
+
+    <style>
+      h2 {
+        margin-bottom: 16px;
+      }
+      ul {
+        list-style: none;
+        padding: 0;
+      }
+      li {
+        margin-bottom: 16px;
+      }
+      .events-section {
+          background-color: #ffe554;
+          border: 2ch solid #ffe554;
+          margin-bottom: 2.5rem;
+      }
+    </style>
+
+
+

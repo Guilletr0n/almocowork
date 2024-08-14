@@ -21,15 +21,12 @@ import panoramicaAlmonasterImage from "../assets/images/panoramica-almonaster.jp
         <main>
             <section class="hero-section">
                 <h1 class="title">
-                    Espacio de trabajo y asesoramiento para personas
-                    emprendedoras
+                    Espacio de trabajo
                 </h1>
+                <h2 class="subtext">Con asesoramiento para personas
+                    emprendedoras</h2>
             </section>
-            <section class="events-section">
-                <h2>Próximos Eventos</h2>
-                <Calendar />
-                <Events/>
-            </section>
+            <Events/>
             <section>
                 <h2>
                     Haz despegar tus ideas y pon en marcha tu propio proyecto
@@ -46,8 +43,6 @@ import panoramicaAlmonasterImage from "../assets/images/panoramica-almonaster.jp
     width={1000}
     height={600}
 />
-
-
             <section>
                 <iframe
                     src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3149.5359297690165!2d-6.789423087176542!3d37.871147606483575!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0xd110c8162817f5d%3A0x6bbeb4200df976ca!2sC.%20Llana%2C%2018%2C%2021350%20Almonaster%20la%20Real%2C%20Huelva!5e0!3m2!1ses!2ses!4v1715442247903!5m2!1ses!2ses"
@@ -71,26 +66,31 @@ import panoramicaAlmonasterImage from "../assets/images/panoramica-almonaster.jp
             main {
             }
             .hero-section {
-                /* position: absolute;
-                top: 55px;
-                left: 0;
-                width: 100vw; */
-
+                width: 1280px;
+                
                 h1.title {
+                    color: rgb(var(--gray-medium));
                     font-family: "Inter", sans-serif;
                     font-size: 6ch;
-                    max-width: 800px;
-                    margin: 0 auto 3rem;
-                    color: #000000;
+                    max-width: 1280px;
+                    margin: 0 auto;
                     text-transform: uppercase;
                     font-weight: 900;
                     letter-spacing: 2px;
                     /* text-shadow: 0 0 6px rgba(0, 0, 0, 0.8); */
-                    margin-bottom: 100px;
                     text-wrap: wrap;
                     white-space: normal;
-                    
+                    margin-bottom: -24px;
                 }
+
+                h2.subtext {
+                    font-weight: 500;
+                    font-size: 16px;
+                    //transform: rotate(-45deg);
+                    display: inline-block;
+                    margin: 0 0 2rem 0;
+                }
+                
                 @media (max-width: 600px) {
                     h1.title {
                         margin-top: 3rem;
@@ -98,11 +98,7 @@ import panoramicaAlmonasterImage from "../assets/images/panoramica-almonaster.jp
                     }
                 }
             }
-            .events-section {
-                background-color: #ffe554;
-                border: 2ch solid #ffe554;
-                margin-bottom: 2.5rem;
-            }
+            
             .contact-section {
                 margin: 2.5rem 0;
             }
