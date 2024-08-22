@@ -5,6 +5,39 @@ interface Event {
   titulo: string;
   descripcion: string
   fecha: string
+  visual: Visual
+  visualAlt: string
+}
+interface DerivedProps {
+  url: string;
+  secure_url: string;
+  raw_transformation: string;
+}
+interface Creator {
+  id: string;
+  type: string;
+}
+interface Visual {
+  id: string;
+  url: string;
+  tags: string[];
+  type: string;
+  bytes: number;
+  width: number;
+  height: number;
+  derived: DerivedProps[];
+  version: number;
+  duration: string | null;
+  folder_id: string;
+  public_id: string;
+  created_at: string;
+  updated_at: string;
+  created_by: Creator;
+  updated_by: Creator;
+  asset_folder: string;
+  display_name: string;
+  resource_type: string;
+  access_control: string[];
 }
 
 const query = {
@@ -15,12 +48,15 @@ const query = {
       {
         allEvents {
           titulo
+          visual
+          visualAlt
           descripcion
           fecha
         }
       }`,
   }),
 };
+
 const response = await fetch(import.meta.env.HYGRAPH_ENDPOINT, query);
 const json = await response.json();
 const allEvents: Event[] = json.data.allEvents;
@@ -34,6 +70,7 @@ const allEvents: Event[] = json.data.allEvents;
       allEvents.map((event) => (
         <li>
           <h3>{event.titulo}</h3>
+          <img src={event.visual.url} alt={event.visualAlt} class="event_visual"/>
           <p>{event.fecha}</p>
           <p>{event.descripcion}</p>
         </li>
@@ -42,8 +79,6 @@ const allEvents: Event[] = json.data.allEvents;
     </ul>
   </section> )
   }
-
-
     <style>
       h2 {
         margin-bottom: 16px;
@@ -59,6 +94,9 @@ const allEvents: Event[] = json.data.allEvents;
           background-color: #ffe554;
           border: 2ch solid #ffe554;
           margin-bottom: 2.5rem;
+      }
+      .event_visual {
+        max-width: 512px;
       }
     </style>
 
