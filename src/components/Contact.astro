@@ -10,7 +10,7 @@ console.log("init");
 function handleVerificationSuccess(token: string, ekey: string) {
     console.log("handleVerificationSuccess", token, ekey);
 }
-
+/*
 if (Astro.request.method === "POST") {
     try {
         const data = await Astro.request.formData();
@@ -43,7 +43,7 @@ if (Astro.request.method === "POST") {
         
         if (phone && phone.toString.length > 1) return;
 
-        /*
+        
         const sendStaff = await resend.emails.send({
             from: "Web Coworking <info@coworkingalmonaster.site>",
             to: [
@@ -54,7 +54,7 @@ if (Astro.request.method === "POST") {
             subject: "Formulario Coworking Almonaster",
             html: `<p>Nombre: ${name}</p><p>Email: ${email}</p><p>Mensaje: ${about}</p>`,
         });
-*/
+
         // const send = await resend.emails.send({
         //     from: "From Name <info@coworkingalmonaster.site>",
         //     to: "gonzalezdecastro.guillermo@gmail.com",
@@ -76,6 +76,7 @@ if (Astro.request.method === "POST") {
 var onSuccess = function (response:string) {
     console.log("¡Éxito del desafío!"+response)
 };
+*/
 ---
 <style>
     .container {
