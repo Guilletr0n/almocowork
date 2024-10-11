@@ -2,7 +2,7 @@
 import Emailer from "../components/Emailer.tsx";
 import { MailerSend, EmailParams, Sender, Recipient } from "mailersend";
 import { Resend } from "resend";
-import { default as RenamedCaptcha } from '../utils/captcha';
+import { default as RenamedCaptcha } from "../utils/captcha";
 
 const resend = new Resend(import.meta.env.RESEND_APIKEY);
 console.log("init");
@@ -18,9 +18,32 @@ if (Astro.request.method === "POST") {
         const email = data.get("email");
         const phone = data.get("phone");
         const about = data.get("about");
+        const hCaptchaToken = data.get("h-captcha-response");
+      
+        const requestBody = new URLSearchParams({
+            secret: import.meta.env.HCAPTCHA_SECRET,
+            response: hCaptchaToken,
+        })
+        
+        fetch("https://api.hcaptcha.com/siteverify", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+                Accept: "application/json",
+            },
+            body: requestBody.toString()
+        }).then(async (response) => {
+            const data = await response.json();
+            console.log(data);
+            if (data.success) {
+                //await sendEmail(name, email, phone, about);
+            }
+            console.log(data);
+        });
+        
+        if (phone && phone.toString.length > 1) return;
 
-        if (phone) return;
-
+        /*
         const sendStaff = await resend.emails.send({
             from: "Web Coworking <info@coworkingalmonaster.site>",
             to: [
@@ -31,13 +54,14 @@ if (Astro.request.method === "POST") {
             subject: "Formulario Coworking Almonaster",
             html: `<p>Nombre: ${name}</p><p>Email: ${email}</p><p>Mensaje: ${about}</p>`,
         });
-
+*/
         // const send = await resend.emails.send({
         //     from: "From Name <info@coworkingalmonaster.site>",
         //     to: "gonzalezdecastro.guillermo@gmail.com",
         //     subject: "Coworking Almonaster",
         //     html: `<p>Hi ${name},</p><p>Hemos recibido tu mensaje.</p>`,
         // });
+
         if (sendStaff.data) {
             console.log("Email sent");
         } else {
@@ -49,6 +73,9 @@ if (Astro.request.method === "POST") {
         }
     }
 }
+var onSuccess = function (response:string) {
+    console.log("¡Éxito del desafío!"+response)
+};
 ---
 
 <style>
@@ -121,16 +148,28 @@ if (Astro.request.method === "POST") {
             <label> Email </label>
             <input type="email" name="email" />
         </div>
-        <!-- <div class="form-field phone">
-            <label class="honey"> Teléfono </label>
-            <input type="text" name="phone" class="honey" />
-        </div> -->
-        <div class="form-field">
-            <label> Cuéntanos algo sobre tu proyecto: </label>
-            <textarea style="resize: none;" name="about"></textarea>
-        </div>
-        <!-- <RenamedCaptcha sitekey="4cca2472-064e-4944-ae54-fca0dcd455ca" /> -->
-        <input type="submit" value="ENVIAR" />
+        <!-- 
+        <div
+            class="h-captcha"
+            data-sitekey="4cca2472-064e-4944-ae54-fca0dcd455ca"
+        >
+        -->
+        <h-captcha
+            id="signupCaptcha"
+            site-key="4cca2472-064e-4944-ae54-fca0dcd455ca"
+            size="normal"
+            data-callback="onSuccess"
+            tabindex="0"></h-captcha>
     </form>
-    <div class="col-2"></div>
+    <div class="form-field phone">
+        <label class="honey"> Teléfono </label>
+        <input type="text" name="phone" class="honey" />
+    </div>
+    <div class="form-field">
+        <label> Cuéntanos algo sobre tu proyecto: </label>
+        <textarea style="resize: none;" name="about"></textarea>
+    </div>
+
+    <input type="submit" value="ENVIAR" />
 </div>
+<div class="col-2"></div>
