@@ -45,6 +45,7 @@ if (Astro.request.method === "POST") {
     const formData = await Astro.request.formData();
     const name = formData.get("name")?.toString || "";
     const email = formData.get("email")?.toString() || "";
+    const about = formData.get("about");
 
     const g_recaptcha_response =
         formData.get("g-recaptcha-response")?.toString() || "";
@@ -54,6 +55,21 @@ if (Astro.request.method === "POST") {
         console.error("invalid captcha");
     } else {
         console.log("valid captcha");
+    }
+    const sendForm = await resend.emails.send({
+        from: "Web Coworking <info@coworkingalmonaster.site>",
+        to: [
+            "gonzalezdecastro.guillermo@gmail.com",
+            // "juanjovazquezlimon@gmail.com",
+        ],
+        //to: 'gonzalezdecastro.guillermo@gmail.com',
+        subject: "Formulario Coworking Almonaster",
+        html: `<p>Nombre: ${name}</p><p>Email: ${email}</p><p>Mensaje: ${about}</p>`,
+    });
+    if (sendForm.data) {
+        console.log("Email sent");
+    } else {
+        console.log("Email not sent");
     }
 }
 
@@ -248,7 +264,10 @@ var onSuccess = function (response:string) {
     </form>
 </div>
 
-<script is:inline src="https://www.google.com/recaptcha/api.js?render=6Lfabl8qAAAAAGCpA6vitVqvWfQ_rA7jW4EQSbYi"></script>
+<script
+    is:inline
+    src="https://www.google.com/recaptcha/api.js?render=6Lfabl8qAAAAAGCpA6vitVqvWfQ_rA7jW4EQSbYi"
+></script>
 <script is:inline>
     function recaptcha() {
         document.querySelector("form").submit();
