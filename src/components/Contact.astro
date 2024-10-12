@@ -4,7 +4,7 @@ import { MailerSend, EmailParams, Sender, Recipient } from "mailersend";
 import { Resend } from "resend";
 
 const resend = new Resend(import.meta.env.RESEND_APIKEY);
-
+let isSent = false;
 export async function processCaptcha(g_recaptcha_response: string) {
     const url = "https://www.google.com/recaptcha/api/siteverify";
 
@@ -41,9 +41,9 @@ export async function processCaptcha(g_recaptcha_response: string) {
 }
 
 if (Astro.request.method === "POST") {
-    console.log("post");
+    
     const formData = await Astro.request.formData();
-    const name = formData.get("name")?.toString || "";
+    const username = formData.get("name")?.toString || "";
     const email = formData.get("email")?.toString() || "";
     const about = formData.get("about");
 
@@ -64,10 +64,11 @@ if (Astro.request.method === "POST") {
         ],
         //to: 'gonzalezdecastro.guillermo@gmail.com',
         subject: "Formulario Coworking Almonaster",
-        html: `<p>Nombre: ${name}</p><p>Email: ${email}</p><p>Mensaje: ${about}</p>`,
+        html: `<p>Nombre: ${username}</p><p>Email: ${email}</p><p>Mensaje: ${about}</p>`,
     });
     if (sendForm.data) {
         console.log("Email sent");
+        isSent = true;
     } else {
         console.log("Email not sent");
     }
@@ -240,6 +241,7 @@ var onSuccess = function (response:string) {
     }
 </style>
 <div class="container">
+    {!isSent &&(
     <form method="POST">
         <div class="form-field">
             <label> Nombre </label>
@@ -261,7 +263,11 @@ var onSuccess = function (response:string) {
             data-action="submit"
             value="Enviar"
         />
-    </form>
+    </form>)}
+    {isSent&&(
+        <p>Gracias por tu mensaje! Pronto nos pondremos en contacto contigo.</p>
+    )}
+
 </div>
 
 <script
