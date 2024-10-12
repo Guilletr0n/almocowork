@@ -3,8 +3,10 @@ import Emailer from "../components/Emailer.tsx";
 import { MailerSend, EmailParams, Sender, Recipient } from "mailersend";
 import { Resend } from "resend";
 
+
 const resend = new Resend(import.meta.env.RESEND_APIKEY);
-let isSent = false;
+let isSubmitted = false;
+
 export async function processCaptcha(g_recaptcha_response: string) {
     const url = "https://www.google.com/recaptcha/api/siteverify";
 
@@ -68,7 +70,7 @@ if (Astro.request.method === "POST") {
     });
     if (sendForm.data) {
         console.log("Email sent");
-        isSent = true;
+        isSubmitted = true;
     } else {
         console.log("Email not sent");
     }
@@ -241,8 +243,8 @@ var onSuccess = function (response:string) {
     }
 </style>
 <div class="container">
-    {!isSent &&(
-    <form method="POST">
+    
+    {!isSubmitted &&(<form method="POST">
         <div class="form-field">
             <label> Nombre </label>
             <input type="text" name="name" />
@@ -264,9 +266,9 @@ var onSuccess = function (response:string) {
             value="Enviar"
         />
     </form>)}
-    {isSent&&(
+    
         <p>Gracias por tu mensaje! Pronto nos pondremos en contacto contigo.</p>
-    )}
+   
 
 </div>
 
