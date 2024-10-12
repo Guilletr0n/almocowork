@@ -2,15 +2,97 @@
 import Emailer from "../components/Emailer.tsx";
 import { MailerSend, EmailParams, Sender, Recipient } from "mailersend";
 import { Resend } from "resend";
-import { default as RenamedCaptcha } from "../utils/captcha";
 
 const resend = new Resend(import.meta.env.RESEND_APIKEY);
-console.log("init");
 
-function handleVerificationSuccess(token: string, ekey: string) {
-    console.log("handleVerificationSuccess", token, ekey);
+export async function processCaptcha(g_recaptcha_response: string) {
+    const url = "https://www.google.com/recaptcha/api/siteverify";
+
+    const requestBody = new URLSearchParams({
+        secret: import.meta.env.RECAPTCHA_SECRET_KEY,
+        response: g_recaptcha_response,
+    });
+
+    console.log("secret:" + import.meta.env.RECAPTCHA_SECRET_KEY);
+    console.log("g_recaptcha_response:" + g_recaptcha_response);
+
+    const response = await fetch(url, {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/x-www-form-urlencoded",
+        },
+        body: requestBody.toString(),
+    });
+
+    const data = await response.json();
+
+    console.log(data);
+    /*
+  {
+    success: true,
+    challenge_ts: '2024-01-20T18:18:12Z',
+    hostname: 'localhost',
+    score: 0.9,
+    action: 'submit'
+  }
+  */
+
+    return data.success;
 }
+
+if (Astro.request.method === "POST") {
+    console.log("post");
+    const formData = await Astro.request.formData();
+    const name = formData.get("name")?.toString || "";
+    const email = formData.get("email")?.toString() || "";
+
+    const g_recaptcha_response =
+        formData.get("g-recaptcha-response")?.toString() || "";
+    const is_valid_captcha = await processCaptcha(g_recaptcha_response);
+
+    if (!is_valid_captcha) {
+        console.error("invalid captcha");
+    } else {
+        console.log("valid captcha");
+    }
+}
+
 /*
+if (Astro.request.method === "POST") {
+    try {
+        const data = await Astro.request.formData();
+        const name = data.get("name");
+        const email = data.get("email");
+        const hCaptchaToken = data.get("h-captcha-response");
+        console.log(hCaptchaToken);
+        const requestBody = {
+            secret: import.meta.env.HCAPTCHA_SECRET,
+            response: hCaptchaToken,
+        };
+        console.log(requestBody);
+        fetch("https://api.hcaptcha.com/siteverify", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+                Accept: "application/json",
+            },
+            body: JSON.stringify(requestBody),
+        }).then(async (response) => {
+            const data = await response.json();
+            console.log(data);
+            if (data.success) {
+                //await sendEmail(name, email, phone, about);
+            }
+            console.log(data);
+        });
+    } catch (error) {
+        if (error instanceof Error) {
+            console.error(error.message);
+        }
+    }
+}
+//site-key="4cca2472-064e-4944-ae54-fca0dcd455ca"
+
 if (Astro.request.method === "POST") {
     try {
         const data = await Astro.request.formData();
@@ -78,10 +160,11 @@ var onSuccess = function (response:string) {
 };
 */
 ---
+
 <style>
     .container {
         display: flex;
-        flex-direction: row;
+        flex-direction: column;
         gap: 0;
         form {
             width: 60%;
@@ -128,7 +211,7 @@ var onSuccess = function (response:string) {
         width: 100%;
         background-color: none;
     }
-    input[type="submit"] {
+    .btn_submit {
         background-color: black;
         color: white;
         padding: 12px 16px;
@@ -150,28 +233,24 @@ var onSuccess = function (response:string) {
             <label> Email </label>
             <input type="email" name="email" />
         </div>
-        <!-- 
-        <div
-            class="h-captcha"
-            data-sitekey="4cca2472-064e-4944-ae54-fca0dcd455ca"
-        >
-        -->
-        <h-captcha
-            id="signupCaptcha"
-            site-key="4cca2472-064e-4944-ae54-fca0dcd455ca"
-            size="normal"
-            data-callback="onSuccess"
-            tabindex="0"></h-captcha>
+        <div class="form-field">
+            <label> Cuéntanos algo sobre tu proyecto: </label>
+            <textarea style="resize: none;" name="about"></textarea>
+        </div>
+        <input
+            type="submit"
+            class="btn_submit"
+            data-sitekey={import.meta.env.RECAPTCHA_SITE_KEY}
+            data-callback="recaptcha"
+            data-action="submit"
+            value="Enviar"
+        />
     </form>
-    <div class="form-field phone">
-        <label class="honey"> Teléfono </label>
-        <input type="text" name="phone" class="honey" />
-    </div>
-    <div class="form-field">
-        <label> Cuéntanos algo sobre tu proyecto: </label>
-        <textarea style="resize: none;" name="about"></textarea>
-    </div>
-
-    <input type="submit" value="ENVIAR" />
 </div>
-<div class="col-2"></div>
+
+<script is:inline src="https://www.google.com/recaptcha/api.js?render=6Lfabl8qAAAAAGCpA6vitVqvWfQ_rA7jW4EQSbYi"></script>
+<script is:inline>
+    function recaptcha() {
+        document.querySelector("form").submit();
+    }
+</script>
