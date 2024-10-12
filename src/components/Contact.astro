@@ -45,7 +45,7 @@ export async function processCaptcha(g_recaptcha_response: string) {
 if (Astro.request.method === "POST") {
     
     const formData = await Astro.request.formData();
-    const username = formData.get("name")?.toString || "";
+    const username = formData.get("name")?.toString() || "";
     const email = formData.get("email")?.toString() || "";
     const about = formData.get("about");
 
