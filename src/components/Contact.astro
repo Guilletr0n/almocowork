@@ -134,11 +134,11 @@ if (Astro.request.method === "POST") {
             <label> Cuéntanos algo sobre tu proyecto: </label>
             <textarea style="resize: none;" name="about"></textarea>
         </div>
-        <div class="g-recaptcha" data-sitekey={import.meta.env.RECAPTCHA_SITE_KEY}></div>
+        <div class="g-recaptcha" data-sitekey="6Lfabl8qAAAAAGCpA6vitVqvWfQ_rA7jW4EQSbYi"></div>
         <input
             type="submit"
             class="btn_submit"
-            data-sitekey={import.meta.env.RECAPTCHA_SITE_KEY}
+            data-sitekey="6Lfabl8qAAAAAGCpA6vitVqvWfQ_rA7jW4EQSbYi"
             data-callback="recaptcha"
             data-action="submit"
             value="Enviar"
@@ -149,7 +149,6 @@ if (Astro.request.method === "POST") {
     )}
 
 </div>
-<script src="https://www.google.com/recaptcha/api.js" async defer></script>
 <script
     is:inline
     src="https://www.google.com/recaptcha/api.js?render=6Lfabl8qAAAAAGCpA6vitVqvWfQ_rA7jW4EQSbYi"
