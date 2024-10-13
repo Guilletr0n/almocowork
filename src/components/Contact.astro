@@ -9,8 +9,13 @@ async function handleVerificationSuccess(token:string) {
   console.log("handleVerificationSuccess", token);
 }
 
+const resend = new Resend(import.meta.env.RESEND_APIKEY);
+
 if (Astro.request.method === "POST") {
   const formData = await Astro.request.formData();
+  const username = formData.get("name")?.toString() || "";
+  const email = formData.get("email")?.toString() || "";
+  const about = formData.get("about")?.toString() || "";
   const token = formData.get('g-recaptcha-response')?.toString() || '';
 
   const response = await fetch(`https://www.google.com/recaptcha/api/siteverify`, {
@@ -28,6 +33,22 @@ if (Astro.request.method === "POST") {
 
   if (data.success) {
     handleVerificationSuccess(token);
+    const sendForm = await resend.emails.send({
+        from: "Web Coworking <info@coworkingalmonaster.site>",
+        to: [
+            "gonzalezdecastro.guillermo@gmail.com",
+            // "juanjovazquezlimon@gmail.com",
+        ],
+        //to: 'gonzalezdecastro.guillermo@gmail.com',
+        subject: "Formulario Coworking Almonaster",
+        html: `<p>Nombre: ${username}</p><p>Email: ${email}</p><p>Mensaje: ${about}</p>`,
+    });
+    if (sendForm.data) {
+        console.log("Email sent");
+        isSubmitted = true;
+    } else {
+        console.log("Email not sent");
+    }
   } else {
     console.error('reCAPTCHA verification failed:', data);
   }
