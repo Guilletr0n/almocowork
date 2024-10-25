@@ -1,0 +1,111 @@
+---
+const visible = true;
+---
+
+<style>
+    .container {
+        display: flex;
+        flex-direction: row;
+        gap: 8px;
+        width: 220px;
+        height: 220px;
+        margin: 16px;
+        form {
+            width: 60%;
+        }
+        .col-2 {
+            width: 40%;
+        }
+    }
+    #captchaContainer {
+        display: flex;
+        flex-wrap: wrap;
+        width: 400px;
+        height: 400px;
+        border: 1px solid black;
+        overflow: scroll;
+    }
+    .zone {
+        background-color: black;
+        width: 120px;
+        height: 120px;
+        color: white;
+    }
+    .hidden {
+        display: none !important;
+    }
+</style>
+<a id="close">Close</a>
+<a id="open">Open</a>
+<div id="captchaContainer" class="container hidden">
+    <div class="zone"></div>
+</div>
+
+<script>
+    const clickable1 = document.getElementById("zone1");
+    const clickable2 = document.getElementById("zone2");
+    const clickable3 = document.getElementById("zone2");
+    const closeBtn = document.getElementById("close");
+    const openBtn = document.getElementById("open");
+    const container = document.getElementById("captchaContainer");
+    const passkey = new Array();
+
+    // 18 RANDOM KEYS
+    const keys = [
+        "TGH78VF",
+        "TDH54WS",
+        "JDV6745",
+        "03KBIT",
+        "HS8902LF",
+        "305JBSD",
+        "23BN4LH",
+        "3JKBKPO",
+        "SOOI3U4",
+        "34K5JHK",
+        "G58G49",
+        "4HGNHHD",
+        "07HT54F",
+        "54GRYTY",
+        "97GFVB",
+        "21VR456",
+        "36RHGC",
+        "15HBDFG",
+    ];
+
+    keys.map((key) => {
+        const div = document.getElementsByClassName("zone")[0];
+        // duplicate element div
+        const newDiv = div.cloneNode(true);
+
+        newDiv.textContent = key;
+        newDiv.dataset.value = key;
+        newDiv.addEventListener("click", handleChoice);
+        container?.appendChild(newDiv);
+    });
+
+    clickable1?.addEventListener("click", handleChoice);
+    clickable2?.addEventListener("click", handleChoice);
+    closeBtn?.addEventListener("click", closeContainer);
+    openBtn?.addEventListener("click", openContainer);
+
+    async function closeContainer() {
+        container?.classList.add("hidden");
+    }
+    async function openContainer() {
+        container?.classList.remove("hidden");
+    }
+
+    async function handleChoice(e: MouseEvent) {
+        console.log(e.target.dataset.value);
+        const choice1 = e.target.dataset.value;
+        passkey.push(choice1)
+        const form = document.querySelector("form");
+        if (!form) return;
+        const data = new FormData(form as HTMLFormElement);
+        data.append("captcha", passkey.join(""));
+        const response = await fetch(form.action, {
+            method: form.method,
+            body: data,
+        });
+    }
+</script>

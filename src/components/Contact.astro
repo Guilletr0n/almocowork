@@ -2,38 +2,25 @@
 import Emailer from "../components/Emailer.tsx";
 import { MailerSend, EmailParams, Sender, Recipient } from "mailersend";
 import { Resend } from "resend";
-
-let isSubmitted = false;
-
-async function handleVerificationSuccess(token:string) {
-  console.log("handleVerificationSuccess", token);
-}
+import Captcha from "../components/Captcha.astro"
 
 const resend = new Resend(import.meta.env.RESEND_APIKEY);
-
+let isSubmitted = false;
+console.log("init server");
 if (Astro.request.method === "POST") {
+    const formData = await Astro.request.formData();
+    console.log(formData);
+}
+/*
+if (Astro.request.method === "POST") {
+    console.log("POST");
   const formData = await Astro.request.formData();
   const username = formData.get("name")?.toString() || "";
   const email = formData.get("email")?.toString() || "";
   const about = formData.get("about")?.toString() || "";
   const token = formData.get('g-recaptcha-response')?.toString() || '';
 
-  const response = await fetch(`https://www.google.com/recaptcha/api/siteverify`, {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/x-www-form-urlencoded',
-    },
-    body: new URLSearchParams({
-      secret: import.meta.env.RECAPTCHA_SECRET_KEY,
-      response: token,
-    }),
-  });
-
-  const data = await response.json();
-
-  if (data.success) {
-    handleVerificationSuccess(token);
-    const sendForm = await resend.emails.send({
+  const sendForm = await resend.emails.send({
         from: "Web Coworking <info@coworkingalmonaster.site>",
         to: [
             "gonzalezdecastro.guillermo@gmail.com",
@@ -43,18 +30,8 @@ if (Astro.request.method === "POST") {
         subject: "Formulario Coworking Almonaster",
         html: `<p>Nombre: ${username}</p><p>Email: ${email}</p><p>Mensaje: ${about}</p>`,
     });
-    if (sendForm.data) {
-        console.log("Email sent");
-        isSubmitted = true;
-    } else {
-        console.log("Email not sent");
-    }
-  } else {
-    console.error('reCAPTCHA verification failed:', data);
-  }
 }
-
-
+*/
 ---
 
 <style>
@@ -119,51 +96,53 @@ if (Astro.request.method === "POST") {
         height: 50px;
     }
 </style>
+---
 <div class="container">
-    
-    {!isSubmitted &&(<form method="POST" onsubmit="handleSubmit(event)">
-        <div class="form-field">
-            <label> Nombre </label>
-            <input type="text" name="name" />
-        </div>
-        <div class="form-field">
-            <label> Email </label>
-            <input type="email" name="email" />
-        </div>
-        <div class="form-field">
-            <label> Cuéntanos algo sobre tu proyecto: </label>
-            <textarea style="resize: none;" name="about"></textarea>
-        </div>
-        <div class="g-recaptcha" data-sitekey="6Lfabl8qAAAAAGCpA6vitVqvWfQ_rA7jW4EQSbYi"></div>
-        <input
-            type="submit"
-            class="btn_submit"
-            data-sitekey="6Lfabl8qAAAAAGCpA6vitVqvWfQ_rA7jW4EQSbYi"
-            data-callback="recaptcha"
-            data-action="submit"
-            value="Enviar"
-        />
-    </form>)}
-    {isSubmitted &&(
-        <p>Gracias por tu mensaje! Pronto nos pondremos en contacto contigo.</p>
-    )}
-
+    {
+        !isSubmitted && (
+            <form method="POST">
+                <div class="form-field">
+                    <label> Nombre </label>
+                    <input type="text" name="name" />
+                </div>
+                <div class="form-field">
+                    <label> Email </label>
+                    <input type="email" name="email" />
+                </div>
+                <div class="form-field">
+                    <label> Cuéntanos algo sobre tu proyecto: </label>
+                    <textarea style="resize: none;" name="about" />
+                </div>
+                <input type="submit" class="btn_submit" value="Enviar" />
+                <Captcha/>
+            </form>
+        )
+    }
+    {
+        isSubmitted && (
+            <p>
+                Gracias por tu mensaje! Pronto nos pondremos en contacto
+                contigo.
+            </p>
+        )
+    }
 </div>
-<script
-    is:inline
-    src="https://www.google.com/recaptcha/api.js?render=6Lfabl8qAAAAAGCpA6vitVqvWfQ_rA7jW4EQSbYi"
-></script>
-<script is:inline>
-    async function handleSubmit(event) {
-        event.preventDefault();
-        const form = event.target;
-        const token = grecaptcha.getResponse();
-        if (!token) {
-          alert('Please complete the reCAPTCHA');
-          return;
-        }
-        const formData = new FormData(form);
-        formData.append('g-recaptcha-response', token);
+
+<script>
+    async function handleSubmit(e: Event) {
+        e.preventDefault();
+        console.log("submit");
+        console.log(e.target);
+        const form = e.target as HTMLFormElement;
+        const formData = new FormData(e.target as HTMLFormElement);
+        const username = formData.get("name")?.toString() || "";
+        const email = formData.get("email")?.toString() || "";
+        const about = formData.get("about")?.toString() || "";
+        // set new formdata property
+        formData.append('easterEgg', 'rabbit hole')
+        console.log(username)
+        const surprise = formData.get('easterEgg')
+        console.log(surprise);
 
         const response = await fetch(form.action, {
           method: form.method,
@@ -175,5 +154,8 @@ if (Astro.request.method === "POST") {
         } else {
           alert('Form submission failed.');
         }
-      }
+    }
+    console.log("init client");
+    const form = document.querySelector("form");
+    
 </script>
