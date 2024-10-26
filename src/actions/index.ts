@@ -6,7 +6,7 @@ export const server = {
     input: z.object({
       name: z.string().nonempty(),
     }),
-    handler: async (input) => {
+    handler: async (input: string) => {
       const images = [
         "anis",
         "beach1",

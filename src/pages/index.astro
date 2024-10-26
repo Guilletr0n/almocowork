@@ -15,18 +15,21 @@ import panoramicaAlmonasterImage from "../assets/images/panoramica-almonaster.jp
 <html lang="en">
     <head>
         <BaseHead title={SITE_TITLE} description={SITE_DESCRIPTION} />
+        <link
+            href="https://unpkg.com/aos@2.3.1/dist/aos.css"
+            rel="stylesheet"
+        />
     </head>
     <body>
         <Header />
         <main>
             <section class="hero-section">
-                <h1 class="title">
-                    Espacio de trabajo
-                </h1>
-                <h2 class="subtext">Con asesoramiento para personas
-                    emprendedoras</h2>
+                <h1 class="title">Espacio de trabajo</h1>
+                <h2 class="subtext">
+                    Con asesoramiento para personas emprendedoras
+                </h2>
             </section>
-            <Events/>
+            <Events />
             <section>
                 <h2>
                     Haz despegar tus ideas y pon en marcha tu propio proyecto
@@ -37,7 +40,7 @@ import panoramicaAlmonasterImage from "../assets/images/panoramica-almonaster.jp
                 <Contact />
             </section>
 
-<!-- <Image
+            <!-- <Image
     src={panoramicaAlmonasterImage}
     alt="Panorámica de Almonaster la Real"
     class="visual__picture"
@@ -67,8 +70,6 @@ import panoramicaAlmonasterImage from "../assets/images/panoramica-almonaster.jp
             main {
             }
             .hero-section {
-                
-                
                 h1.title {
                     color: rgb(var(--gray-medium));
                     font-family: "Inter", sans-serif;
@@ -91,7 +92,7 @@ import panoramicaAlmonasterImage from "../assets/images/panoramica-almonaster.jp
                     display: inline-block;
                     margin: 2rem 0;
                 }
-                
+
                 @media (max-width: 600px) {
                     h1.title {
                         margin-top: 3rem;
@@ -99,7 +100,7 @@ import panoramicaAlmonasterImage from "../assets/images/panoramica-almonaster.jp
                     }
                 }
             }
-            
+
             .contact-section {
                 margin: 2.5rem 0;
             }
@@ -108,7 +109,7 @@ import panoramicaAlmonasterImage from "../assets/images/panoramica-almonaster.jp
                 filter: grayscale() contrast(1.75);
                 transition: filter 0.2s ease-in-out;
                 &:hover {
-                    filter:brightness(1) grayscale(0) contrast(1);
+                    filter: brightness(1) grayscale(0) contrast(1);
                 }
             }
         </style>
