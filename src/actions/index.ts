@@ -1,6 +1,10 @@
 import { defineAction } from "astro:actions";
 import { z } from "astro:schema";
 
+const accept = () => {
+  return true;
+};
+
 export const server = {
   getGreeting: defineAction({
     input: z.object({
@@ -33,8 +37,13 @@ export const server = {
       ];
       const compareSolution = solution.toString();
       const userTry = input.name.split(",").sort().join(",");
+      let response = "Nope";
+      if (compareSolution === userTry) {
+        response = "ANBOLO21350";
+      }
       return {
-        message: `${userTry} ${compareSolution === userTry}!`,
+        //message: `${userTry} ${compareSolution === userTry}!`,
+        message: response,
       };
     },
   }),

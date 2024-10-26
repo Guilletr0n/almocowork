@@ -36,12 +36,28 @@
     .hidden {
         display: none !important;
     }
+    #captchaButton {
+        background-color: #000;
+        border: none;
+        color: white;
+        padding: 15px 32px;
+        text-align: center;
+        text-decoration: none;
+        display: inline-block;
+        font-size: 16px;
+        margin: 4px 2px;
+        cursor: pointer;
+        width: 200px;
+    }
+
 </style>
 <br />
-<button id="actionButton">Soy serrano</button>
-<p>Para enviar el formulario de contacto, demuestra que eres serrano</p>
+<!-- <button id="captchaButton">Soy serrano</button> -->
+<input id="captchaButton" type="button">otro botón</input>
+<p>Para enviar el formulario de contacto, demuestra que eres serrano haciendo click en las imágenes relacionadas con la sierra</p>
 <a id="close">Close</a>
 <a id="open">Open</a>
+<input id="captchaSecret" type="hidden" name="captcha" value="" />
 <div id="captchaContainer" class="container">
     <div class="zone"></div>
 </div>
@@ -75,9 +91,6 @@
       const div = document.getElementsByClassName("zone")[0];
       // duplicate element div
       const newDiv = div.cloneNode(true) as HTMLElement;
-      console.log(image)
-      //remove div from document
-      //newDiv.textContent = key;
       newDiv.style.backgroundImage = `url(src/assets/images/captcha/${image}_240.png)`;
       newDiv.dataset.value = image;
       newDiv.addEventListener("click", (e) => handleChoice(e));
@@ -99,7 +112,6 @@
   }
 
   async function handleChoice(e: MouseEvent) {
-    console.log(e)
       const target = e.target as HTMLElement;
       const choice = target.dataset.value;
       if (target?.classList.contains("selected")) {
@@ -110,16 +122,18 @@
           target.classList.add("selected");
       }
       passkey.push(choice);
-      console.log(passkey);
+/*
       const form = document.querySelector("form");
       if (!form) return;
       const data = new FormData(form as HTMLFormElement);
 
       data.append("captcha", passkey.join(""));
+
       const response = await fetch(form.action, {
           method: form.method,
           body: data,
       });
+*/
   }
 
   function removeChoice(choice: string) {
@@ -128,9 +142,11 @@
           passkey.splice(index, 1);
       }
   }
-  const button = document.getElementById("actionButton");
+  const button = document.getElementById("captchaButton");
 
   button?.addEventListener("click", async () => {
+    console.log('handle click')
+
       const { data, error } = await actions.getGreeting({
           name: passkey.join(","),
       });
@@ -139,5 +155,10 @@
           return;
       }
       console.log(data);
+      const secretInput:HTMLInputElement = document.getElementById('captchaSecret') as HTMLInputElement;
+      if (secretInput) {
+          secretInput.value = data.message;
+      }
+
   });
 </script>

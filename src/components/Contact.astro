@@ -99,8 +99,8 @@ if (Astro.request.method === "POST") {
 <div class="container">
     {
         !isSubmitted && (
-            <Captcha/>
-            <form method="POST">
+            <form id="formulario" method="POST">
+                <Captcha/>
                 <div class="form-field">
                     <label> Nombre </label>
                     <input type="text" name="name" />
@@ -113,7 +113,7 @@ if (Astro.request.method === "POST") {
                     <label> Cuéntanos algo sobre tu proyecto: </label>
                     <textarea style="resize: none;" name="about" />
                 </div>
-                <input type="submit" class="btn_submit" value="Enviar" />
+                <button id="submit">Enviar</button>
 
             </form>
         )
@@ -129,15 +129,18 @@ if (Astro.request.method === "POST") {
 </div>
 
 <script>
+    document.getElementById("submit")?.addEventListener("click", handleSubmit);
     async function handleSubmit(e: Event) {
         e.preventDefault();
+        console.log("Submit")
+
         console.log("submit");
-        console.log(e.target);
-        const form = e.target as HTMLFormElement;
-        const formData = new FormData(e.target as HTMLFormElement);
+        const form = document.getElementById('formulario') as HTMLFormElement;
+        const formData = new FormData(form);
         const username = formData.get("name")?.toString() || "";
         const email = formData.get("email")?.toString() || "";
         const about = formData.get("about")?.toString() || "";
+        const captcha = formData.get("captcha")?.toString() || "";
         // set new formdata property
         formData.append('easterEgg', 'rabbit hole')
         console.log(username)
@@ -150,10 +153,11 @@ if (Astro.request.method === "POST") {
         });
 
         if (response.ok) {
-          alert('Form submitted successfully!');
+          alert('Tu mensaje se ha enviado correctamente 🙂');
         } else {
-          alert('Form submission failed.');
+          alert('Tu mensaje no se ha podido enviar ☹️');
         }
+
     }
     const form = document.querySelector("form");
 
