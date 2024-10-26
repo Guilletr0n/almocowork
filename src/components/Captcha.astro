@@ -1,5 +1,5 @@
 ---
-const visible = true;
+
 ---
 
 <style>
@@ -30,11 +30,20 @@ const visible = true;
         width: 120px;
         height: 120px;
         color: white;
+        background-size: cover;
+    }
+    .selected {
+      -webkit-box-shadow:inset 0px 0px 0px 5px #000;
+      -moz-box-shadow:inset 0px 0px 0px 5px #000;
+      box-shadow:inset 0px 0px 0px 5px #000;
     }
     .hidden {
         display: none !important;
     }
 </style>
+<br/>
+<button id="actionButton">Soy serrano</button>
+<p>Para enviar el formulario de contacto, demuestra que eres serrano</p>
 <a id="close">Close</a>
 <a id="open">Open</a>
 <div id="captchaContainer" class="container hidden">
@@ -42,6 +51,7 @@ const visible = true;
 </div>
 
 <script>
+    import { actions } from 'astro:actions';
     const clickable1 = document.getElementById("zone1");
     const clickable2 = document.getElementById("zone2");
     const clickable3 = document.getElementById("zone2");
@@ -50,37 +60,38 @@ const visible = true;
     const container = document.getElementById("captchaContainer");
     const passkey = new Array();
 
-    // 18 RANDOM KEYS
-    const keys = [
-        "TGH78VF",
-        "TDH54WS",
-        "JDV6745",
-        "03KBIT",
-        "HS8902LF",
-        "305JBSD",
-        "23BN4LH",
-        "3JKBKPO",
-        "SOOI3U4",
-        "34K5JHK",
-        "G58G49",
-        "4HGNHHD",
-        "07HT54F",
-        "54GRYTY",
-        "97GFVB",
-        "21VR456",
-        "36RHGC",
-        "15HBDFG",
+    const images = [
+      'anis',
+      'beach1',
+      'beach2',
+      'beach3',
+      'mezquita',
+      'beach4',
+      'bellota',
+      'building',
+      'city1',
+      'gallipiernos',
+      'guarros',
+      'trafficjam',
+      'trafficjam2',
+      'trafficjam3',
+      'trafficjam4'
     ];
 
-    keys.map((key) => {
+    images.map((image,idx,all) => {
         const div = document.getElementsByClassName("zone")[0];
         // duplicate element div
         const newDiv = div.cloneNode(true);
-
-        newDiv.textContent = key;
-        newDiv.dataset.value = key;
+        //remove div from document
+        //newDiv.textContent = key;
+        newDiv.style.backgroundImage = `url(src/assets/images/captcha/${image}_240.png)`;
+        newDiv.dataset.value = image;
         newDiv.addEventListener("click", handleChoice);
         container?.appendChild(newDiv);
+        // no entiendo por qué pero funciona
+        if(idx===1){
+          container?.removeChild(div);
+        }
     });
 
     clickable1?.addEventListener("click", handleChoice);
@@ -96,16 +107,42 @@ const visible = true;
     }
 
     async function handleChoice(e: MouseEvent) {
-        console.log(e.target.dataset.value);
-        const choice1 = e.target.dataset.value;
-        passkey.push(choice1)
+        const target = e.target as HTMLElement;
+        const choice = target.dataset.value;
+        if (target?.classList.contains('selected')) {
+            target.classList.remove("selected");
+            removeChoice(choice)
+            return;
+        } else {
+          target.classList.add("selected");
+        }
+        passkey.push(choice);
+        console.log(passkey)
         const form = document.querySelector("form");
         if (!form) return;
         const data = new FormData(form as HTMLFormElement);
+        /*
         data.append("captcha", passkey.join(""));
         const response = await fetch(form.action, {
             method: form.method,
             body: data,
         });
+        */
     }
+
+    function removeChoice(choice: string) {
+        const index = passkey.indexOf(choice);
+        if (index > -1) {
+            passkey.splice(index, 1);
+        }
+    }
+    const button = document.getElementById('actionButton');
+    button?.addEventListener('click', async () => {
+      const { data, error } = await actions.getGreeting({ name: passkey.join(",") });
+      if (error) {
+        console.error(error);
+        return;
+      }
+      console.log(data)
+    });
 </script>
