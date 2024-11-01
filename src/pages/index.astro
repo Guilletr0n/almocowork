@@ -9,6 +9,7 @@ import Events from "../components/Events.astro";
 import { SITE_TITLE, SITE_DESCRIPTION } from "../consts";
 import plazaMemoriaImage from "../src/assets/images/plaza-de-la-memoria.jpg";
 import panoramicaAlmonasterImage from "../assets/images/panoramica-almonaster.jpg";
+import ContactForm from "../components/ContactForm.astro";
 ---
 
 <!doctype html>
@@ -35,7 +36,7 @@ import panoramicaAlmonasterImage from "../assets/images/panoramica-almonaster.jp
                 </h2>
             </section>
             <section class="contact-section">
-                <Contact />
+                <ContactForm />
             </section>
 
 <!-- <Image
@@ -68,8 +69,8 @@ import panoramicaAlmonasterImage from "../assets/images/panoramica-almonaster.jp
             main {
             }
             .hero-section {
-                
-                
+
+
                 h1.title {
                     color: rgb(var(--gray-medium));
                     font-family: "Inter", sans-serif;
@@ -92,7 +93,7 @@ import panoramicaAlmonasterImage from "../assets/images/panoramica-almonaster.jp
                     display: inline-block;
                     margin: 2rem 0;
                 }
-                
+
                 @media (max-width: 600px) {
                     h1.title {
                         margin-top: 3rem;
@@ -100,7 +101,7 @@ import panoramicaAlmonasterImage from "../assets/images/panoramica-almonaster.jp
                     }
                 }
             }
-            
+
             .contact-section {
                 margin: 2.5rem 0;
             }
