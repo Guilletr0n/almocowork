@@ -29,11 +29,12 @@ const siteKey = import.meta.env.HCAPTCHA_SITE_KEY;
 <script src="https://js.hcaptcha.com/1/api.js" async defer></script>
 
 <script>
-document.getElementById('contactForm').addEventListener('submit', async (e) => {
+document.getElementById('contactForm')?.addEventListener('submit', async (e) => {
   e.preventDefault();
-  const form = e.target;
+  const form = e.target as HTMLFormElement;
   const formData = new FormData(form);
   const hcaptchaResponse = formData.get('h-captcha-response');
+
 
   if (!hcaptchaResponse) {
     alert('Please complete the captcha');
@@ -48,11 +49,15 @@ document.getElementById('contactForm').addEventListener('submit', async (e) => {
 
     const result = await response.json();
     const statusDiv = document.getElementById('formStatus');
+    if(!statusDiv){
+      return;
+    }
 
-    if (response.ok) {
+    if (response.ok && statusDiv) {
       statusDiv.textContent = 'Message sent successfully!';
       statusDiv.className = 'success';
       form.reset();
+      //@ts-ignore
       hcaptcha.reset();
     } else {
       statusDiv.textContent = result.error || 'Failed to send message';
@@ -60,7 +65,7 @@ document.getElementById('contactForm').addEventListener('submit', async (e) => {
     }
   } catch (error) {
     console.error('Error:', error);
-    document.getElementById('formStatus').textContent = 'An error occurred';
+    //document.getElementById('formStatus')?.textContent = 'An error occurred';
   }
 });
 </script>
