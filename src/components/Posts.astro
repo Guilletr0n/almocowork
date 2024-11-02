@@ -1,0 +1,38 @@
+---
+interface Post {
+  titulo: string;
+  descripcion: string;
+  fecha: string;
+}
+const query = {
+  method: "POST",
+  headers: { "Content-Type": "application/json" },
+  body: JSON.stringify({
+    query: `
+      {
+        allPosts {
+          titulo
+          descripcion
+          fecha
+        }
+      }`,
+  }),
+};
+const response = await fetch(import.meta.env.HYGRAPH_ENDPOINT, query);
+const json = await response.json();
+const allPosts: Post[] = json.data.allPosts;
+---
+<h1>Posts</h1>
+{ allPosts && allPosts.length > 0 ? (
+  <ul>
+    {allPosts.map((post) => (
+      <li>
+        <h2>{post.titulo}</h2>
+        <p>{post.descripcion}</p>
+        <p>{post.fecha}</p>
+      </li>
+    ))}
+  </ul>
+) : (
+  <p>No hay posts</p>
+)}

@@ -28,7 +28,7 @@ export const POST: APIRoute = async ({ request }) => {
 
     if (!name || !email || !message) {
       return new Response(
-        JSON.stringify({ error: "All fields are required" }),
+        JSON.stringify({ error: "Todos los campos son requeridos" }),
         { status: 400 },
       );
     }
@@ -42,10 +42,13 @@ export const POST: APIRoute = async ({ request }) => {
     }
 
     const { data, error } = await resend.emails.send({
-      from: "Contact Form <onboarding@resend.dev>",
-      to: contactEmail,
-      subject: `New Contact Form Submission from ${name}`,
-      text: `
+      from: "Web Coworking <info@coworkingalmonaster.site>",
+      to: [
+        "gonzalezdecastro.guillermo@gmail.com",
+        // "juanjovazquezlimon@gmail.com",
+      ],
+      subject: `Formulario Coworking Almonaster de ${name}`,
+      html: `
 Name: ${name}
 Email: ${email}
 Message: ${message}
@@ -53,6 +56,7 @@ Message: ${message}
     });
 
     if (error) {
+      console.log(error);
       return new Response(
         JSON.stringify({ error: "Algo ha fallado, no se ha enviado el email" }),
         {
