@@ -54,7 +54,7 @@ document.getElementById('contactForm')?.addEventListener('submit', async (e) => 
     }
 
     if (response.ok && statusDiv) {
-      statusDiv.textContent = 'Message sent successfully!';
+      statusDiv.textContent = 'Tu mensaje ha sido enviado';
       statusDiv.className = 'success';
       form.reset();
       //@ts-ignore
