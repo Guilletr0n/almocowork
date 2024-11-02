@@ -1,7 +1,7 @@
 import type { APIRoute } from "astro";
 import { Resend } from "resend";
 
-const resend = new Resend(import.meta.env.RESEND_API_KEY);
+const resend = new Resend(import.meta.env.RESEND_APIKEY);
 const contactEmail = import.meta.env.CONTACT_EMAIL;
 
 async function verifyHCaptcha(token: string) {
@@ -9,7 +9,7 @@ async function verifyHCaptcha(token: string) {
     method: "POST",
     headers: { "Content-Type": "application/x-www-form-urlencoded" },
     body: new URLSearchParams({
-      secret: import.meta.env.HCAPTCHA_SECRET_KEY,
+      secret: import.meta.env.HCAPTCHA_SECRET,
       response: token,
     }),
   });
@@ -35,7 +35,8 @@ export const POST: APIRoute = async ({ request }) => {
 
     const isHCaptchaValid = await verifyHCaptcha(hcaptchaResponse);
     if (!isHCaptchaValid) {
-      return new Response(JSON.stringify({ error: "Invalid captcha" }), {
+      console.log("Invalid captcha");
+      return new Response(JSON.stringify({ error: "Captcha no válido" }), {
         status: 400,
       });
     }
@@ -52,17 +53,20 @@ Message: ${message}
     });
 
     if (error) {
-      return new Response(JSON.stringify({ error: "Failed to send email" }), {
-        status: 500,
-      });
+      return new Response(
+        JSON.stringify({ error: "Algo ha fallado, no se ha enviado el email" }),
+        {
+          status: 500,
+        },
+      );
     }
 
     return new Response(
-      JSON.stringify({ message: "Email sent successfully" }),
+      JSON.stringify({ message: "Se ha enviado el email correctamente" }),
       { status: 200 },
     );
   } catch (error) {
-    return new Response(JSON.stringify({ error: "Internal server error" }), {
+    return new Response(JSON.stringify({ error: "Fallo del servidor" }), {
       status: 500,
     });
   }
