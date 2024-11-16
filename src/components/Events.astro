@@ -48,7 +48,6 @@ const query = {
       {
         allEvents {
           titulo
-          visual
           visualAlt
           descripcion
           fecha
@@ -62,7 +61,7 @@ const json = await response.json();
 const allEvents: Event[] = json.data.allEvents;
 
 ---
-{ allEvents  && allEvents.length > 0 &&  
+{ allEvents  && allEvents.length > 0 &&
 ( <section class="events-section">
   <h2>Próximos Eventos</h2>
   <ul>
@@ -70,7 +69,7 @@ const allEvents: Event[] = json.data.allEvents;
       allEvents.map((event) => (
         <li>
           <h3>{event.titulo}</h3>
-          <img src={event.visual.url} alt={event.visualAlt} class="event_visual"/>
+          <!-- <img src={event.visual.url} alt={event.visualAlt} class="event_visual"/> -->
           <p>{event.fecha}</p>
           <p>{event.descripcion}</p>
         </li>
@@ -99,6 +98,3 @@ const allEvents: Event[] = json.data.allEvents;
         max-width: 512px;
       }
     </style>
-
-
-

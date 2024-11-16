@@ -1,0 +1,37 @@
+---
+import BlogPost from '../../layouts/BlogPost.astro';
+export function getStaticPaths() {
+  return [
+    {params: {slug: 'clifford'}},
+    {params: {slug: undefined}}
+  ];
+}
+
+const { slug } = Astro.params;
+
+type Post = {
+  title: string;
+};
+
+const query = {
+  method: "POST",
+  headers: { "Content-Type": "application/json" },
+  body: JSON.stringify({
+    query: `{
+      allPosts(where: {slug: "primer-articulo"}) {
+        title
+      }
+    }
+  `
+  })
+};
+const response = await fetch(import.meta.env.HYGRAPH_ENDPOINT, query);
+const json = await response.json();
+console.log(json);
+const post: Post[] = json.data.allPosts;
+
+---
+<p>title:</p>
+<p>{post[0].title}</p>
+
+<BlogPost title={post[0].title} />

@@ -1,35 +1,41 @@
 ---
-interface Post {
+
+type Post = {
+  slug: string;
+  title: string;
+};
+
+interface Event {
   titulo: string;
-  descripcion: string;
-  fecha: string;
 }
+
+
+
 const query = {
   method: "POST",
   headers: { "Content-Type": "application/json" },
   body: JSON.stringify({
     query: `
-      {
-        posts {
-          titulo
-          descripcion
-          fecha
-        }
-      }`,
+    {
+    allPosts {
+    title
+    slug
+      }
+    }`,
   }),
 };
 const response = await fetch(import.meta.env.HYGRAPH_ENDPOINT, query);
 const json = await response.json();
-const allPosts: Post[] = json.data.posts;
+const allPosts: Post[] = json.data.allPosts;
+
 ---
 <h1>Posts</h1>
-{ allPosts && allPosts.length > 0 ? (
+{ allPosts ? (
   <ul>
-    {allPosts.map((post) => (
+    { allPosts.map((post:any) => (
       <li>
-        <h2>{post.titulo}</h2>
-        <p>{post.descripcion}</p>
-        <p>{post.fecha}</p>
+        <h2>{post.title}</h2>
+        <a href={`/posts/${post.slug}`}>Ver post</a>
       </li>
     ))}
   </ul>
