@@ -48,6 +48,7 @@ const query = {
       {
         allEvents {
           titulo
+          visual
           visualAlt
           descripcion
           fecha
@@ -58,6 +59,7 @@ const query = {
 
 const response = await fetch(import.meta.env.HYGRAPH_ENDPOINT, query);
 const json = await response.json();
+console.log(json.data)
 const allEvents: Event[] = json.data.allEvents;
 
 ---
@@ -69,7 +71,7 @@ const allEvents: Event[] = json.data.allEvents;
       allEvents.map((event) => (
         <li>
           <h3>{event.titulo}</h3>
-          <!-- <img src={event.visual.url} alt={event.visualAlt} class="event_visual"/> -->
+          <img src={event.visual.url} alt={event.visualAlt} class="event_visual"/>
           <p>{event.fecha}</p>
           <p>{event.descripcion}</p>
         </li>

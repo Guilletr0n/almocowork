@@ -54,7 +54,7 @@ body {
   line-height: 1.7;
 }
 main {
-  width: 1280px;
+  width: 1250px;
   max-width: calc(100% - 2em);
   margin: auto;
   padding: 3em 1em;
@@ -135,6 +135,11 @@ blockquote {
   padding: 0 0 0 20px;
   margin: 0px;
   font-size: 1.333em;
+}
+ul {
+  margin: 0;
+  padding: 0;
+  list-style: none;
 }
 hr {
   border: none;

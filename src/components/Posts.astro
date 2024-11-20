@@ -3,13 +3,12 @@
 type Post = {
   slug: string;
   title: string;
+  date: string;
 };
 
 interface Event {
   titulo: string;
 }
-
-
 
 const query = {
   method: "POST",
@@ -17,9 +16,11 @@ const query = {
   body: JSON.stringify({
     query: `
     {
-    allPosts {
-    title
-    slug
+      allPosts {
+        title
+        description
+        slug
+        date
       }
     }`,
   }),
@@ -29,16 +30,25 @@ const json = await response.json();
 const allPosts: Post[] = json.data.allPosts;
 
 ---
-<h1>Posts</h1>
+
 { allPosts ? (
-  <ul>
+  <ul class="posts_list">
     { allPosts.map((post:any) => (
-      <li>
+      <li class="post_list__item">
         <h2>{post.title}</h2>
-        <a href={`/posts/${post.slug}`}>Ver post</a>
+        <p>{post.description}</p>
+        <p>{post.date}</p>
+        <a href={`/posts/${post.slug}`}>Leer artículo</a>
       </li>
     ))}
   </ul>
 ) : (
   <p>No hay posts</p>
 )}
+<style>
+.posts_list {
+  .post_list__item {
+    margin-bottom: 3rem;
+  }
+}
+</style>
