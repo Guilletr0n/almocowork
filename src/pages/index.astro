@@ -7,7 +7,6 @@ import Calendar from "../components/Calendar.astro";
 import Contact from "../components/Contact.astro";
 import Events from "../components/Events.astro";
 import { SITE_TITLE, SITE_DESCRIPTION } from "../consts";
-import plazaMemoriaImage from "../src/assets/images/plaza-de-la-memoria.jpg";
 import panoramicaAlmonasterImage from "../assets/images/panoramica-almonaster.jpg";
 import ContactForm from "../components/ContactForm.astro";
 ---
@@ -16,19 +15,19 @@ import ContactForm from "../components/ContactForm.astro";
 <html lang="es">
     <head>
         <BaseHead title={SITE_TITLE} description={SITE_DESCRIPTION} />
-        <script src="https://www.google.com/recaptcha/api.js" async defer></script>
+        <script src="https://www.google.com/recaptcha/api.js" async defer
+        ></script>
     </head>
     <body>
         <Header />
         <main>
             <section class="hero-section">
-                <h1 class="title">
-                    Espacio de trabajo
-                </h1>
-                <h2 class="subtext">Con asesoramiento para personas
-                    emprendedoras</h2>
+                <h1 class="title">Espacio de trabajo</h1>
+                <h2 class="subtext">
+                    Con asesoramiento para personas emprendedoras
+                </h2>
             </section>
-            <Events/>
+            <Events />
             <section>
                 <h2>
                     Haz despegar tus ideas y pon en marcha tu propio proyecto
@@ -39,7 +38,7 @@ import ContactForm from "../components/ContactForm.astro";
                 <ContactForm />
             </section>
 
-<!-- <Image
+            <!-- <Image
     src={panoramicaAlmonasterImage}
     alt="Panorámica de Almonaster la Real"
     class="visual__picture"
@@ -61,7 +60,6 @@ import ContactForm from "../components/ContactForm.astro";
         <style>
             body {
                 //background-image: url("../assets/images/plaza-de-la-memoria.jpg");
-                //background-image: url(plazaMemoriaImage);
                 //background-size: contain;
                 //background-repeat: no-repeat;
                 background-position: top;
@@ -69,8 +67,6 @@ import ContactForm from "../components/ContactForm.astro";
             main {
             }
             .hero-section {
-
-
                 h1.title {
                     color: rgb(var(--gray-medium));
                     font-family: "Inter", sans-serif;
@@ -110,7 +106,7 @@ import ContactForm from "../components/ContactForm.astro";
                 filter: grayscale() contrast(1.75);
                 transition: filter 0.2s ease-in-out;
                 &:hover {
-                    filter:brightness(1) grayscale(0) contrast(1);
+                    filter: brightness(1) grayscale(0) contrast(1);
                 }
             }
         </style>
