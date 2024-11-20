@@ -14,6 +14,7 @@ import ContactForm from "../components/ContactForm.astro";
 <!doctype html>
 <html lang="es">
     <head>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
         <BaseHead title={SITE_TITLE} description={SITE_DESCRIPTION} />
         <script src="https://www.google.com/recaptcha/api.js" async defer
         ></script>
@@ -29,7 +30,7 @@ import ContactForm from "../components/ContactForm.astro";
             </section>
             <Events />
             <section>
-                <h2>
+                <h2 class="claim">
                     Haz despegar tus ideas y pon en marcha tu propio proyecto
                     empresarial
                 </h2>
@@ -45,7 +46,7 @@ import ContactForm from "../components/ContactForm.astro";
     width={1000}
     height={600}
 /> -->
-            <section>
+            <section class="map">
                 <iframe
                     src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3149.5359297690165!2d-6.789423087176542!3d37.871147606483575!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0xd110c8162817f5d%3A0x6bbeb4200df976ca!2sC.%20Llana%2C%2018%2C%2021350%20Almonaster%20la%20Real%2C%20Huelva!5e0!3m2!1ses!2ses!4v1715442247903!5m2!1ses!2ses"
                     width="100%"
@@ -58,6 +59,11 @@ import ContactForm from "../components/ContactForm.astro";
         </main>
         <Footer />
         <style>
+            html,
+            body {
+                overflow-x: hidden;
+            }
+
             body {
                 //background-image: url("../assets/images/plaza-de-la-memoria.jpg");
                 //background-size: contain;
@@ -71,8 +77,7 @@ import ContactForm from "../components/ContactForm.astro";
                     color: rgb(var(--gray-medium));
                     font-family: "Inter", sans-serif;
                     font-size: 3ch;
-                    max-width: 1280px;
-                    margin: 0 auto;
+                    max-width: 90vw;
                     text-transform: uppercase;
                     font-weight: 900;
                     letter-spacing: 2px;
@@ -85,7 +90,6 @@ import ContactForm from "../components/ContactForm.astro";
                 h2.subtext {
                     font-weight: 500;
                     font-size: 2.5ch;
-                    //transform: rotate(-45deg);
                     display: inline-block;
                     margin: 2rem 0;
                 }
@@ -93,13 +97,38 @@ import ContactForm from "../components/ContactForm.astro";
                 @media (max-width: 600px) {
                     h1.title {
                         margin-top: 3rem;
-                        font-size: 36px;
+                        font-size: 2rem;
                     }
                 }
             }
 
+            @media (max-width: 600px) {
+                main {
+                }
+                h1.title {
+                    margin-top: 3rem;
+                    font-size: 10px;
+                }
+                h2.subtext {
+                    width: 90vw;
+
+                    foint-size: 1rem;
+                }
+                h2.claim {
+                    max-width: 90vw;
+                }
+            }
             .contact-section {
                 margin: 2.5rem 0;
+            }
+
+            @media (max-width: 600px) {
+                .contact-section {
+                    max-width: 90vw;
+                }
+                .map {
+                    max-width: 90vw;
+                }
             }
 
             .visual__picture {
