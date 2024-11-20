@@ -1,20 +1,21 @@
 ---
+import FormattedDate from "../components/FormattedDate.astro";
 
 type Post = {
-  slug: string;
-  title: string;
-  date: string;
+    slug: string;
+    title: string;
+    date: Date;
 };
 
 interface Event {
-  titulo: string;
+    titulo: string;
 }
 
 const query = {
-  method: "POST",
-  headers: { "Content-Type": "application/json" },
-  body: JSON.stringify({
-    query: `
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({
+        query: `
     {
       allPosts {
         title
@@ -23,32 +24,40 @@ const query = {
         date
       }
     }`,
-  }),
+    }),
 };
 const response = await fetch(import.meta.env.HYGRAPH_ENDPOINT, query);
 const json = await response.json();
 const allPosts: Post[] = json.data.allPosts;
-
 ---
 
-{ allPosts ? (
-  <ul class="posts_list">
-    { allPosts.map((post:any) => (
-      <li class="post_list__item">
-        <h2>{post.title}</h2>
-        <p>{post.description}</p>
-        <p>{post.date}</p>
-        <a href={`/posts/${post.slug}`}>Leer artículo</a>
-      </li>
-    ))}
-  </ul>
-) : (
-  <p>No hay posts</p>
-)}
-<style>
-.posts_list {
-  .post_list__item {
-    margin-bottom: 3rem;
-  }
+{
+    allPosts ? (
+        <ul class="posts_list">
+            {allPosts.map((post: any) => (
+                <li class="post_list__item">
+                    <a href={`/posts/${post.slug}`}>
+                        <h2>{post.title}</h2>
+                    </a>
+                    <p>
+                        <FormattedDate date={new Date(post.date)} />
+                    </p>
+                    <p>{post.description}</p>
+                    <a href={`/posts/${post.slug}`}>Leer artículo</a>
+                </li>
+            ))}
+        </ul>
+    ) : (
+        <p>No hay posts</p>
+    )
 }
+<style>
+    .posts_list {
+        a {
+            text-decoration: none;
+        }
+        .post_list__item {
+            margin-bottom: 3rem;
+        }
+    }
 </style>

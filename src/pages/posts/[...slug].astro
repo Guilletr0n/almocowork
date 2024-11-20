@@ -1,31 +1,31 @@
 ---
-import BlogPost from '../../layouts/BlogPost.astro';
-import BaseHead from '../../components/BaseHead.astro';
-import Header from '../../components/Header.astro';
-import Footer from '../../components/Footer.astro';
-import { SITE_TITLE, SITE_DESCRIPTION } from '../../consts';
-import { Markdown } from '@astropub/md'
-
-const {frontmatter} = Astro.props;
+import BlogPost from "../../layouts/BlogPost.astro";
+import BaseHead from "../../components/BaseHead.astro";
+import Header from "../../components/Header.astro";
+import Footer from "../../components/Footer.astro";
+import { SITE_TITLE, SITE_DESCRIPTION } from "../../consts";
+import { Markdown } from "@astropub/md";
+import FormattedDate from "../../components/FormattedDate.astro";
 
 export function getStaticPaths() {
-  return [
-    {params: {slug: 'clifford'}},
-    {params: {slug: undefined}}
-  ];
+    return [{ params: { slug: "clifford" } }, { params: { slug: undefined } }];
 }
 
 const { slug } = Astro.params;
 
 type Post = {
-  title: string;
+    title: string;
+    date: Date;
+    body: {
+        markdown: string;
+    };
 };
 
 const query = {
-  method: "POST",
-  headers: { "Content-Type": "application/json" },
-  body: JSON.stringify({
-    query: `query ($slug: String) {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({
+        query: `query ($slug: String) {
       allPosts(where: {slug: $slug}) {
       title
       date
@@ -36,10 +36,10 @@ const query = {
       }
     }
   `,
-  variables: {
-    slug: slug
-  }
-  })
+        variables: {
+            slug: slug,
+        },
+    }),
 };
 const response = await fetch(import.meta.env.HYGRAPH_ENDPOINT, query);
 const json = await response.json();
@@ -47,23 +47,23 @@ console.log(json);
 const post: Post[] = json.data.allPosts;
 const mdContent = post[0].body.markdown;
 ---
+
 <!doctype html>
-<html lang="en">
-	<head>
-		<BaseHead title={SITE_TITLE} description={SITE_DESCRIPTION} />
-		<style>
-		</style>
-	</head>
-	<body>
-		<Header />
-		<main>
-			<section>
-			     <h1>{post[0].title}</h1>
-				<p>{post[0].date}</p>
-				<!-- <img src={post[0].picture.url} alt={post[0].title} /> -->
-				<Markdown of={mdContent} />
+<html lang="es">
+    <head>
+        <BaseHead title={SITE_TITLE} description={SITE_DESCRIPTION} />
+        <style></style>
+    </head>
+    <body>
+        <Header />
+        <main>
+            <section>
+                <h1>{post[0].title}</h1>
+                <FormattedDate date={new Date(post[0].date)} />
+                <!-- <img src={post[0].picture.url} alt={post[0].title} /> -->
+                <Markdown of={mdContent} />
             </section>
-    		</main>
-    		<Footer />
-    	</body>
-    </html>
+        </main>
+        <Footer />
+    </body>
+</html>
